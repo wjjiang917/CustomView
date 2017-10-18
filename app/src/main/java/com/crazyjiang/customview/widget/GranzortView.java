@@ -44,6 +44,7 @@ public class GranzortView extends View {
 
     private enum State {
         CIRCLE_STATE, // 圆环
+        TRIANGLE_LINE_STATE, // 三角形
         TRIANGLE_STATE, // 三角形
         FINISH_STATE
     }
@@ -110,18 +111,7 @@ public class GranzortView extends View {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                switch (mCurrentState) {
-                    case CIRCLE_STATE: // 圆 -> 三角形
-                        Log.d("TAG", "circle done");
-                        mCurrentState = State.TRIANGLE_STATE;
-                        valueAnimator.start();
-                        break;
-                    case TRIANGLE_STATE: //  三角形 ->
-                        Log.d("TAG", "triangle done");
-                        mCurrentState = State.FINISH_STATE;
-                        valueAnimator.start();
-                        break;
-                }
+
             }
 
             @Override
@@ -130,11 +120,31 @@ public class GranzortView extends View {
 
             @Override
             public void onAnimationRepeat(Animator animator) {
+                switch (mCurrentState) {
+                    case CIRCLE_STATE: // 圆 -> 三角形
+                        Log.d("TAG", "circle done");
+                        mCurrentState = State.TRIANGLE_LINE_STATE;
+                        valueAnimator.start();
+                        break;
+                    case TRIANGLE_LINE_STATE: //  三角形 ->
+                        Log.d("TAG", "triangle line done");
+                        mCurrentState = State.TRIANGLE_STATE;
+                        valueAnimator.start();
+                        break;
+                    case TRIANGLE_STATE: //  三角形 ->
+                        Log.d("TAG", "triangle done");
+                        mCurrentState = State.FINISH_STATE;
+                        valueAnimator.start();
+                        break;
+                    case FINISH_STATE:
+                        valueAnimator.cancel();
+                        break;
+                }
             }
         });
         valueAnimator.setDuration(3000);
-        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
-//        valueAnimator.setRepeatCount(ValueAnimator.INFINITE); // loading
+//        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
+        valueAnimator.setRepeatCount(ValueAnimator.INFINITE); // loading
         valueAnimator.start();
     }
 
@@ -142,9 +152,9 @@ public class GranzortView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        canvas.drawColor(ContextCompat.getColor(getContext(), R.color.colorPrimary)); // bg
         canvas.save();
-        canvas.translate(mViewWidth / 2, mViewHeight / 2);
+        canvas.translate(mViewWidth / 2, mViewHeight / 2); // 重新设置(0, 0)坐标
 
         dst.reset();
         dst.lineTo(0, 0);  // 圆心画点
@@ -169,7 +179,7 @@ public class GranzortView extends View {
                 pathMeasure.getSegment(0, pathMeasure.getLength() * percent, dst, true);
                 canvas.drawPath(dst, paint);
                 break;
-            case TRIANGLE_STATE:
+            case TRIANGLE_LINE_STATE:
                 canvas.drawPath(innerCircle, paint);
                 canvas.drawPath(outerCircle, paint);
 
@@ -186,7 +196,7 @@ public class GranzortView extends View {
                 canvas.drawPath(dst, paint);
 
                 break;
-            case FINISH_STATE:
+            case TRIANGLE_STATE:
                 canvas.drawPath(innerCircle, paint);
                 canvas.drawPath(outerCircle, paint);
 
@@ -199,6 +209,13 @@ public class GranzortView extends View {
                 pathMeasure.setPath(triangle2, false);
                 pathMeasure.getSegment(0, pathMeasure.getLength() * percent, dst, true);
                 canvas.drawPath(dst, paint);
+                break;
+            case FINISH_STATE:
+                canvas.drawPath(innerCircle, paint);
+                canvas.drawPath(outerCircle, paint);
+
+                canvas.drawPath(triangle1, paint);
+                canvas.drawPath(triangle2, paint);
                 break;
         }
 
