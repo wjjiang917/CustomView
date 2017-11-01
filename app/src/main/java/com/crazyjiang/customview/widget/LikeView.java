@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,10 +11,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.View;
 
 import com.crazyjiang.customview.R;
+
+import static com.crazyjiang.customview.Utils.dp2px;
 
 /**
  * Created by Jiangwenjin on 2017/10/30.
@@ -220,10 +220,5 @@ public class LikeView extends View {
 
     public void setCurOffset(int curOffset) {
         this.curOffset = curOffset;
-    }
-
-    private float dp2px(float dp) {
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        return dp * metrics.density;
     }
 }

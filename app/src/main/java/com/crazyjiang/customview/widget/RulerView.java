@@ -3,15 +3,15 @@ package com.crazyjiang.customview.widget;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.View;
+
+import static com.crazyjiang.customview.Utils.dp2px;
 
 /**
  * Created by Jiangwenjin on 2017/10/31.
@@ -98,11 +98,6 @@ public class RulerView extends View {
 
         paint.setTextSize(dp2px(32));
         canvas.drawText(String.valueOf(value), getWidth() / 2, getHeight() / 2 - dp2px(20), paint);
-    }
-
-    private float dp2px(float dp) {
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        return dp * metrics.density;
     }
 
     public int getValue() {
