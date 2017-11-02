@@ -3,4 +3,4 @@ custom views
 
 
 ## FlipboardView
-![FlipboardView](http://ovu5hb0jj.bkt.clouddn.com/flipboard.gif)
+![FlipboardView](https://github.com/wjjiang917/CustomView/blob/master/gif/flipboard.gif)
