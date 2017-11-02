@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
@@ -39,6 +40,9 @@ public class FlipboardView extends View {
 
     {
         camera = new Camera();
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        camera.setLocation(0, 0, -displayMetrics.density * 6);
+
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.flipboard);
 
@@ -109,6 +113,11 @@ public class FlipboardView extends View {
         canvas.drawBitmap(bitmap, x, y, paint);
         canvas.restore();
     }
+
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        super.onMeasure(heightMeasureSpec, heightMeasureSpec);
+//    }
 
     public int getDegree1() {
         return degree1;
