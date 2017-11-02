@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.crazyjiang.customview.MainActivity">
 
-    <com.crazyjiang.customview.widget.FlipboardView
+    <com.crazyjiang.customview.widget.WaveView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
