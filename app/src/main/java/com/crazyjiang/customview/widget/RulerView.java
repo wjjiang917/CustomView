@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 import static com.crazyjiang.customview.Utils.dp2px;
@@ -32,6 +34,18 @@ public class RulerView extends View {
     private float rulerHeight;
 
     private ObjectAnimator animator;
+
+    private GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener(){
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return super.onScroll(e1, e2, distanceX, distanceY);
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+    });
 
     public RulerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

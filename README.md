@@ -13,6 +13,8 @@ custom views
 ## LikeView
 ![LikeView](https://github.com/wjjiang917/CustomView/blob/master/gif/like.gif)
 
+## BallGestureView
+![WaveView](https://github.com/wjjiang917/CustomView/blob/master/gif/ball.gif)
 
 ## RadarView
 ![RadarView](https://github.com/wjjiang917/CustomView/blob/master/gif/radar.gif)
