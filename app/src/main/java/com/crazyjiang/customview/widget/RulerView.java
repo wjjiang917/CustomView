@@ -1,7 +1,6 @@
 package com.crazyjiang.customview.widget;
 
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -35,23 +34,16 @@ public class RulerView extends View {
 
     private ObjectAnimator animator;
 
-    private GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener(){
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            return super.onScroll(e1, e2, distanceX, distanceY);
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            return super.onFling(e1, e2, velocityX, velocityY);
-        }
-    });
+    private GestureDetector gestureDetector;
+    private int distance;
 
     public RulerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
     {
+        setClickable(true);
+
         rulerHeight = dp2px(80);
         padding = dp2px(10);
         bigStrokeWidth = dp2px(2);
@@ -66,13 +58,27 @@ public class RulerView extends View {
 
         animator = ObjectAnimator.ofInt(this, "value", 30, LENGTH);
         animator.setDuration(5 * 1000L);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//        animator.start();
+
+        gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                invalidate();
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+//                distance -= distanceX;
+//                invalidate();
+
+                int temp = value + (int) (distanceX * 100 / rulerWidth);
+                temp = temp < 0 ? 0 : temp;
+                temp = temp > 100 ? 100 : temp;
+                setValue(temp);
+
+                return super.onScroll(e1, e2, distanceX, distanceY);
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                return super.onFling(e1, e2, velocityX, velocityY);
             }
         });
-        animator.start();
     }
 
     @Override
@@ -112,13 +118,20 @@ public class RulerView extends View {
 
         paint.setTextSize(dp2px(32));
         canvas.drawText(String.valueOf(value), getWidth() / 2, getHeight() / 2 - dp2px(20), paint);
+
+        canvas.restore();
     }
 
-    public int getValue() {
-        return value;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        gestureDetector.onTouchEvent(event);
+
+        return super.onTouchEvent(event);
     }
 
     public void setValue(int value) {
         this.value = value;
+        invalidate();
     }
 }
